@@ -1,5 +1,6 @@
 from pydantic_settings import BaseSettings
-from typing import List
+from pydantic import field_validator
+from typing import List, Any
 import json
 
 
@@ -12,25 +13,35 @@ class Settings(BaseSettings):
 
     SECRET_KEY: str = "change-this-secret-key-in-production-must-be-32-chars-min"
     ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440  # 24 hours
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440
 
-    CORS_ORIGINS: List[str] = ["http://localhost:5173", "http://localhost:3000"]
+    CORS_ORIGINS: Any = ["http://localhost:5173", "http://localhost:3000"]
+
+    @field_validator("CORS_ORIGINS", mode="before")
+    @classmethod
+    def parse_cors_origins(cls, v: Any) -> List[str]:
+        if isinstance(v, list):
+            return v
+        if isinstance(v, str):
+            try:
+                parsed = json.loads(v)
+                if isinstance(parsed, list):
+                    return parsed
+            except Exception:
+                pass
+            return [v]
+        return v
+
+    @field_validator("DATABASE_URL", mode="before")
+    @classmethod
+    def fix_postgres_scheme(cls, v: str) -> str:
+        if isinstance(v, str) and v.startswith("postgres://"):
+            return v.replace("postgres://", "postgresql://", 1)
+        return v
 
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
-
-    def model_post_init(self, __context):
-        # Render gives postgres:// but psycopg2 needs postgresql://
-        url = self.DATABASE_URL
-        if url.startswith("postgres://"):
-            object.__setattr__(self, "DATABASE_URL", url.replace("postgres://", "postgresql://", 1))
-
-        if isinstance(self.CORS_ORIGINS, str):
-            try:
-                object.__setattr__(self, "CORS_ORIGINS", json.loads(self.CORS_ORIGINS))
-            except Exception:
-                object.__setattr__(self, "CORS_ORIGINS", [self.CORS_ORIGINS])
 
 
 settings = Settings()
