@@ -21,6 +21,11 @@ class Settings(BaseSettings):
         env_file_encoding = "utf-8"
 
     def model_post_init(self, __context):
+        # Render gives postgres:// but psycopg2 needs postgresql://
+        url = self.DATABASE_URL
+        if url.startswith("postgres://"):
+            object.__setattr__(self, "DATABASE_URL", url.replace("postgres://", "postgresql://", 1))
+
         if isinstance(self.CORS_ORIGINS, str):
             try:
                 object.__setattr__(self, "CORS_ORIGINS", json.loads(self.CORS_ORIGINS))
