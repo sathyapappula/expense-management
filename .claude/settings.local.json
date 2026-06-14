@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-Command python3.11, python3.12, python3.13, python311, python312 -ErrorAction SilentlyContinue)",
+      "PowerShell(py -0 2>&1)",
+      "PowerShell(Copy-Item \"C:\\\\Users\\\\Chiru\\\\Desktop\\\\Expanse Management\\\\backend\\\\.env.example\" \"C:\\\\Users\\\\Chiru\\\\Desktop\\\\Expanse Management\\\\backend\\\\.env\")",
+      "PowerShell(psql -U postgres -c \"\\\\du\" 2>&1)",
+      "PowerShell(psql -U postgres -c \"\\\\l\" 2>&1)",
+      "PowerShell(& \"C:\\\\Program Files\\\\PostgreSQL\\\\18\\\\bin\\\\psql.exe\" -U postgres -c \"CREATE USER chituser WITH PASSWORD 'chitpass';\" 2>&1)",
+      "PowerShell($env:PGPASSWORD = \"postgres\"; & \"C:\\\\Program Files\\\\PostgreSQL\\\\18\\\\bin\\\\psql.exe\" -U postgres -h localhost -c \"SELECT version\\(\\);\" 2>&1)",
+      "PowerShell($hba = \"C:\\\\Program Files\\\\PostgreSQL\\\\18\\\\data\\\\pg_hba.conf\"; [System.IO.File]::GetAccessControl\\($hba\\) | ForEach-Object { $_.Access | Select-Object IdentityReference, FileSystemRights, AccessControlType } 2>&1 | Select-Object -First 10)",
+      "PowerShell(Restart-Service postgresql-x64-18 -Force; Start-Sleep -Seconds 3; \\(Get-Service postgresql-x64-18\\).Status)",
+      "PowerShell($env:PGPASSWORD = \"chitpass\"; & \"C:\\\\Program Files\\\\PostgreSQL\\\\18\\\\bin\\\\psql.exe\" -h 127.0.0.1 -U chituser -d finance_db -c \"SELECT current_user, current_database\\(\\);\" 2>&1)",
+      "PowerShell(Invoke-RestMethod -Uri \"http://localhost:8000/health\" -Method GET)",
+      "PowerShell(Invoke-WebRequest -Uri \"http://localhost:8000/health\" -UseBasicParsing 2>&1)",
+      "PowerShell(Invoke-WebRequest -Uri \"http://localhost:8000/docs\" -UseBasicParsing 2>&1 | Select-Object StatusCode, @{N='Content';E={$_.Content.Substring\\(0,200\\)}})",
+      "PowerShell($resp = Invoke-RestMethod -Uri \"http://localhost:8000/openapi.json\" -Method GET; $resp.paths.PSObject.Properties.Name | Select-Object -First 20)",
+      "PowerShell(netstat -ano)",
+      "PowerShell(Get-Process -Id 16560, 17804, 13960)",
+      "PowerShell(Get-Process -Id 16560, 17804, 13960 | ForEach-Object { $p = $_; $wmi = Get-WmiObject Win32_Process -Filter \"ProcessId=$\\($p.Id\\)\"; [PSCustomObject]@{PID=$p.Id; CmdLine=$wmi.CommandLine} })",
+      "PowerShell(Get-WmiObject Win32_Process -Filter \"ProcessId=13960\")",
+      "PowerShell(Get-WmiObject Win32_Process -Filter \"ProcessId=17804\")",
+      "PowerShell(Invoke-RestMethod -Uri \"http://localhost:8001/health\" -Method GET)",
+      "PowerShell($env:PGPASSWORD = \"chitpass\"; & \"C:\\\\Program Files\\\\PostgreSQL\\\\18\\\\bin\\\\psql.exe\" -h 127.0.0.1 -U chituser -d finance_db -c \"\\\\dt\" 2>&1)",
+      "PowerShell(cd \"C:\\\\Users\\\\Chiru\\\\Desktop\\\\Expanse Management\\\\frontend\"; Start-Process -FilePath \"powershell.exe\" -ArgumentList \"-Command\", \"npm run dev 2>&1 | Out-File -FilePath 'frontend_out.txt' -Encoding utf8\" -WindowStyle Hidden)",
+      "PowerShell(Get-Process | Where-Object { $_.MainWindowTitle -eq \"\" -and \\($_.ProcessName -eq \"python\" -or $_.ProcessName -eq \"node\"\\) } | Stop-Process -Force -ErrorAction SilentlyContinue; Start-Sleep -Seconds 1; Write-Host \"Killed old processes\")",
+      "PowerShell(cd \"C:\\\\Users\\\\Chiru\\\\Desktop\\\\Expanse Management\\\\frontend\"; Start-Process -FilePath \"powershell.exe\" -ArgumentList \"-Command\", \"npm run dev 2>&1 | Out-File -FilePath 'frontend_out.txt' -Encoding utf8 -Force\" -WindowStyle Hidden)"
+    ]
+  }
+}
