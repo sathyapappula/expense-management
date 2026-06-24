@@ -106,6 +106,18 @@
 }
 
 /* ════════════════════════════════════════════════════════════════
+   ANTI-ZOOM — prevent iOS Safari from zooming on input focus
+   ════════════════════════════════════════════════════════════════ */
+input, textarea, select,
+.ant-input, .ant-input-affix-wrapper,
+.ant-select-selector, .ant-picker,
+.ant-input-number-input,
+ion-input input, ion-select, ion-datetime {
+  font-size: 16px !important;
+  touch-action: manipulation;
+}
+
+/* ════════════════════════════════════════════════════════════════
    MOBILE SHELL
    ════════════════════════════════════════════════════════════════ */
 .mobile-shell {
