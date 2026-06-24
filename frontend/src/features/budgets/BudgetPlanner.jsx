@@ -5,6 +5,8 @@ import {
   Progress, Typography, Alert, Space, DatePicker,
 } from 'antd'
 import { WarningOutlined, CheckCircleOutlined } from '@ant-design/icons'
+import { IonIcon } from '@ionic/react'
+import { addOutline } from 'ionicons/icons'
 import dayjs from 'dayjs'
 import { fetchBudgetByMonth, createBudget, updateBudget, deleteBudget } from './budgetSlice'
 import PageHeader from '../../components/common/PageHeader'
@@ -104,22 +106,41 @@ export default function BudgetPlanner() {
   const overBudget = monthItems.filter((b) => b.is_over_budget)
 
   return (
-    <div>
-      <PageHeader
-        title="Budget Planner"
-        subtitle="Set monthly budgets and track utilization"
-        onAdd={openAdd}
-        addLabel="Set Budget"
-        extra={
+    <div style={{ paddingBottom: isMobile ? 100 : 0 }}>
+      {isMobile ? (
+        <>
+          <div className="mob-page-heading">
+            <div>
+              <div className="mob-page-title">Budget</div>
+              <div className="mob-page-sub">Monthly spending limits</div>
+            </div>
+          </div>
           <DatePicker
             picker="month"
             value={selectedMonth}
             onChange={(d) => d && setSelectedMonth(d)}
             allowClear={false}
-            format="MMM YYYY"
+            format="MMMM YYYY"
+            style={{ width: '100%', borderRadius: 12, marginBottom: 16 }}
           />
-        }
-      />
+        </>
+      ) : (
+        <PageHeader
+          title="Budget Planner"
+          subtitle="Set monthly budgets and track utilization"
+          onAdd={openAdd}
+          addLabel="Set Budget"
+          extra={
+            <DatePicker
+              picker="month"
+              value={selectedMonth}
+              onChange={(d) => d && setSelectedMonth(d)}
+              allowClear={false}
+              format="MMM YYYY"
+            />
+          }
+        />
+      )}
 
       {overBudget.length > 0 && (
         <Alert
@@ -183,6 +204,13 @@ export default function BudgetPlanner() {
           )
         })}
       </Row>
+
+      {/* Mobile FAB */}
+      {isMobile && (
+        <button className="exp-fab" onClick={openAdd}>
+          <IonIcon icon={addOutline} style={{ fontSize: 24 }} />
+        </button>
+      )}
 
       {/* Mobile: full page */}
       {isMobile ? (

@@ -76,7 +76,15 @@ function MobileExpenseView({ items, loading, onAdd, onEdit, onDelete }) {
   }, [filtered])
 
   return (
-    <div style={{ paddingBottom: 80 }}>
+    <div style={{ paddingBottom: 100 }}>
+
+      {/* ── Page heading ─────────────────────────────────── */}
+      <div className="mob-page-heading">
+        <div>
+          <div className="mob-page-title">Expenses</div>
+          <div className="mob-page-sub">Track & categorize your spending</div>
+        </div>
+      </div>
 
       {/* ── Category breakdown ────────────────────────────── */}
       {loading ? (

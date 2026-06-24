@@ -1,19 +1,14 @@
 import { useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { IonIcon } from '@ionic/react'
 import { chevronBackOutline } from 'ionicons/icons'
 
-export default function MobileFormPage({ open, onClose, title, children }) {
-  // Lock body scroll when open
+function FormPageContent({ onClose, title, children }) {
   useEffect(() => {
-    if (open) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-    return () => { document.body.style.overflow = '' }
-  }, [open])
-
-  if (!open) return null
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = prev }
+  }, [])
 
   return (
     <div className="mfp-overlay">
@@ -28,5 +23,13 @@ export default function MobileFormPage({ open, onClose, title, children }) {
         {children}
       </div>
     </div>
+  )
+}
+
+export default function MobileFormPage({ open, onClose, title, children }) {
+  if (!open) return null
+  return createPortal(
+    <FormPageContent onClose={onClose} title={title}>{children}</FormPageContent>,
+    document.body
   )
 }

@@ -301,7 +301,15 @@ export default function CropList() {
   }
 
   return (
-    <div style={{ paddingBottom: 80 }}>
+    <div style={{ paddingBottom: 100 }}>
+      {/* Page heading */}
+      <div className="mob-page-heading">
+        <div>
+          <div className="mob-page-title">Crops</div>
+          <div className="mob-page-sub">Track investment & harvest P&L</div>
+        </div>
+      </div>
+
       {/* Filter tabs */}
       <div className="exp-tab-scroll" style={{ marginBottom: 12 }}>
         {[['all','All Crops'],['active','Growing'],['harvested','Harvested']].map(([k, l]) => (
