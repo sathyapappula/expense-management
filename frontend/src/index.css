@@ -106,6 +106,91 @@
 }
 
 /* ════════════════════════════════════════════════════════════════
+   MOBILE FORM PAGE — full-screen form overlay with back button
+   ════════════════════════════════════════════════════════════════ */
+.mfp-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  background: var(--ft-bg);
+  display: flex;
+  flex-direction: column;
+  animation: mfp-slide-in 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes mfp-slide-in {
+  from { transform: translateX(100%); opacity: 0.6; }
+  to   { transform: translateX(0);   opacity: 1; }
+}
+
+.mfp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(env(safe-area-inset-top, 0px) + 14px) 16px 14px;
+  background: var(--ft-hero);
+  flex-shrink: 0;
+}
+
+.mfp-back-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  flex-shrink: 0;
+}
+.mfp-back-btn:active { opacity: 0.7; }
+
+.mfp-title {
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  flex: 1;
+  text-align: center;
+}
+
+.mfp-body {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 24px 20px 48px;
+}
+
+/* Ant Design form tweaks inside MobileFormPage */
+.mfp-body .ant-form-item-label > label {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ft-text-2);
+}
+.mfp-body .ant-input,
+.mfp-body .ant-input-affix-wrapper,
+.mfp-body .ant-select-selector,
+.mfp-body .ant-picker,
+.mfp-body .ant-input-number {
+  border-radius: 12px !important;
+  border-color: var(--ft-border) !important;
+  background: var(--ft-surface) !important;
+}
+.mfp-body .ant-btn-primary {
+  height: 52px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--ft-primary) 0%, #7C3AED 100%);
+  border: none;
+  box-shadow: 0 6px 20px rgba(91,79,207,0.35);
+}
+
+/* ════════════════════════════════════════════════════════════════
    AUTH — mobile full-page elite design
    ════════════════════════════════════════════════════════════════ */
 .auth-mobile-shell {
@@ -935,7 +1020,7 @@ ion-input input, ion-select, ion-datetime {
 /* FAB */
 .exp-fab {
   position: fixed;
-  bottom: calc(var(--tab-bar-h, 64px) + 16px);
+  bottom: calc(70px + env(safe-area-inset-bottom, 0px) + 16px);
   right: 20px;
   width: 52px; height: 52px;
   border-radius: 50%;

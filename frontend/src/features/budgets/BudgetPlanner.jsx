@@ -8,9 +8,11 @@ import { WarningOutlined, CheckCircleOutlined } from '@ant-design/icons'
 import dayjs from 'dayjs'
 import { fetchBudgetByMonth, createBudget, updateBudget, deleteBudget } from './budgetSlice'
 import PageHeader from '../../components/common/PageHeader'
+import MobileFormPage from '../../components/common/MobileFormPage'
 import { formatCurrency } from '../../utils/formatters'
+import { useIsMobile } from '../../hooks/useIsMobile'
 
-const { Text, Title } = Typography
+const { Text } = Typography
 const CATEGORIES = [
   'Food & Dining', 'Transport', 'Housing', 'Healthcare',
   'Shopping', 'Education', 'Entertainment', 'Personal Care',
@@ -31,8 +33,33 @@ const CATEGORY_COLORS = {
   'Others':         '#6B7280',
 }
 
+function BudgetFormFields({ form, onSubmit, editing, loading, onClose }) {
+  return (
+    <Form form={form} layout="vertical" onFinish={onSubmit}>
+      <Form.Item name="category" label="Category" rules={[{ required: true }]}>
+        <Select placeholder="Select category" size="large" disabled={!!editing}>
+          {CATEGORIES.map((c) => (
+            <Select.Option key={c} value={c}>
+              <span style={{ color: CATEGORY_COLORS[c], marginRight: 6 }}>●</span>{c}
+            </Select.Option>
+          ))}
+        </Select>
+      </Form.Item>
+      <Form.Item name="allocated_amount" label="Budget Amount (₹)" rules={[{ required: true }, { type: 'number', min: 1 }]}>
+        <InputNumber style={{ width: '100%' }} min={1} precision={2} prefix="₹" size="large" />
+      </Form.Item>
+      <Form.Item style={{ marginBottom: 0 }}>
+        <Button type="primary" htmlType="submit" loading={loading} block size="large">
+          {editing ? 'Update Budget' : 'Set Budget'}
+        </Button>
+      </Form.Item>
+    </Form>
+  )
+}
+
 export default function BudgetPlanner() {
   const dispatch = useDispatch()
+  const isMobile = useIsMobile()
   const { monthItems, loading } = useSelector((s) => s.budget)
   const [selectedMonth, setSelectedMonth] = useState(dayjs())
   const [formOpen, setFormOpen] = useState(false)
@@ -71,6 +98,8 @@ export default function BudgetPlanner() {
     form.resetFields()
     setFormOpen(true)
   }
+
+  const closeForm = () => { setFormOpen(false); setEditing(null) }
 
   const overBudget = monthItems.filter((b) => b.is_over_budget)
 
@@ -113,75 +142,66 @@ export default function BudgetPlanner() {
         {monthItems.map((budget) => {
           const color = CATEGORY_COLORS[budget.category] || '#6B7280'
           return (
-          <Col key={budget.id} xs={24} sm={12} xl={8}>
-            <Card
-              title={<span style={{ color }}>{budget.category}</span>}
-              extra={
-                <Space>
-                  <Button size="small" onClick={() => openEdit(budget)}>Edit</Button>
-                  <Button size="small" danger onClick={() => handleDelete(budget.id)}>Delete</Button>
-                </Space>
-              }
-              style={{ borderTop: `3px solid ${color}` }}
-            >
-              <div style={{ marginBottom: 8 }}>
-                <Text type="secondary">Budget: </Text>
-                <Text strong>{formatCurrency(budget.allocated_amount)}</Text>
-              </div>
-              <div style={{ marginBottom: 8 }}>
-                <Text type="secondary">Spent: </Text>
-                <Text strong style={{ color: budget.is_over_budget ? '#ff4d4f' : '#52c41a' }}>
-                  {formatCurrency(budget.spent_amount)}
-                </Text>
-              </div>
-              <Progress
-                percent={Math.min(Math.round(budget.utilization_pct), 100)}
-                status={budget.is_over_budget ? 'exception' : budget.utilization_pct > 80 ? 'active' : 'normal'}
-                strokeColor={budget.is_over_budget ? '#ff4d4f' : color}
-                format={(pct) => `${pct}%`}
-              />
-              {budget.is_over_budget ? (
-                <Text type="danger" style={{ fontSize: 12 }}>
-                  <WarningOutlined /> Over by {formatCurrency(budget.spent_amount - budget.allocated_amount)}
-                </Text>
-              ) : (
-                <Text type="success" style={{ fontSize: 12 }}>
-                  <CheckCircleOutlined /> {formatCurrency(budget.allocated_amount - budget.spent_amount)} remaining
-                </Text>
-              )}
-            </Card>
-          </Col>
-        )})}
+            <Col key={budget.id} xs={24} sm={12} xl={8}>
+              <Card
+                title={<span style={{ color }}>{budget.category}</span>}
+                extra={
+                  <Space>
+                    <Button size="small" onClick={() => openEdit(budget)}>Edit</Button>
+                    <Button size="small" danger onClick={() => handleDelete(budget.id)}>Delete</Button>
+                  </Space>
+                }
+                style={{ borderTop: `3px solid ${color}` }}
+              >
+                <div style={{ marginBottom: 8 }}>
+                  <Text type="secondary">Budget: </Text>
+                  <Text strong>{formatCurrency(budget.allocated_amount)}</Text>
+                </div>
+                <div style={{ marginBottom: 8 }}>
+                  <Text type="secondary">Spent: </Text>
+                  <Text strong style={{ color: budget.is_over_budget ? '#ff4d4f' : '#52c41a' }}>
+                    {formatCurrency(budget.spent_amount)}
+                  </Text>
+                </div>
+                <Progress
+                  percent={Math.min(Math.round(budget.utilization_pct), 100)}
+                  status={budget.is_over_budget ? 'exception' : budget.utilization_pct > 80 ? 'active' : 'normal'}
+                  strokeColor={budget.is_over_budget ? '#ff4d4f' : color}
+                  format={(pct) => `${pct}%`}
+                />
+                {budget.is_over_budget ? (
+                  <Text type="danger" style={{ fontSize: 12 }}>
+                    <WarningOutlined /> Over by {formatCurrency(budget.spent_amount - budget.allocated_amount)}
+                  </Text>
+                ) : (
+                  <Text type="success" style={{ fontSize: 12 }}>
+                    <CheckCircleOutlined /> {formatCurrency(budget.allocated_amount - budget.spent_amount)} remaining
+                  </Text>
+                )}
+              </Card>
+            </Col>
+          )
+        })}
       </Row>
 
-      <Modal
-        title={editing ? 'Edit Budget' : 'Set Budget'}
-        open={formOpen}
-        onCancel={() => { setFormOpen(false); setEditing(null) }}
-        footer={null}
-        destroyOnClose
-      >
-        <Form form={form} layout="vertical" onFinish={handleSubmit} style={{ marginTop: 16 }}>
-          <Form.Item name="category" label="Category" rules={[{ required: true }]}>
-            <Select placeholder="Select category" disabled={!!editing}>
-              {CATEGORIES.map((c) => (
-                <Select.Option key={c} value={c}>
-                  <span style={{ color: CATEGORY_COLORS[c], marginRight: 6 }}>●</span>{c}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-          <Form.Item name="allocated_amount" label="Budget Amount (₹)" rules={[{ required: true }, { type: 'number', min: 1 }]}>
-            <InputNumber style={{ width: '100%' }} min={1} precision={2} prefix="₹" />
-          </Form.Item>
-          <Form.Item style={{ marginBottom: 0, textAlign: 'right' }}>
-            <Button onClick={() => { setFormOpen(false); setEditing(null) }} style={{ marginRight: 8 }}>Cancel</Button>
-            <Button type="primary" htmlType="submit" loading={loading}>
-              {editing ? 'Update Budget' : 'Set Budget'}
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
+      {/* Mobile: full page */}
+      {isMobile ? (
+        <MobileFormPage open={formOpen} onClose={closeForm} title={editing ? 'Edit Budget' : 'Set Budget'}>
+          <BudgetFormFields form={form} onSubmit={handleSubmit} editing={editing} loading={loading} onClose={closeForm} />
+        </MobileFormPage>
+      ) : (
+        <Modal
+          title={editing ? 'Edit Budget' : 'Set Budget'}
+          open={formOpen}
+          onCancel={closeForm}
+          footer={null}
+          destroyOnClose
+        >
+          <div style={{ marginTop: 16 }}>
+            <BudgetFormFields form={form} onSubmit={handleSubmit} editing={editing} loading={loading} onClose={closeForm} />
+          </div>
+        </Modal>
+      )}
     </div>
   )
 }

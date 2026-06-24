@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Modal, Form, Input, Select, DatePicker, InputNumber, Button, Skeleton, Empty } from 'antd'
+import { Form, Input, Select, DatePicker, InputNumber, Button, Skeleton, Empty } from 'antd'
 import { IonIcon } from '@ionic/react'
 import {
   leafOutline, addOutline, trashOutline, createOutline,
@@ -12,6 +12,7 @@ import {
   fetchCrops, createCrop, updateCrop, deleteCrop, addCropExpense, deleteCropExpense,
 } from './cropSlice'
 import { formatCurrency } from '../../utils/formatters'
+import MobileFormPage from '../../components/common/MobileFormPage'
 
 const CROP_TYPES = ['Paddy', 'Wheat', 'Cotton', 'Sugarcane', 'Maize', 'Groundnut', 'Sunflower', 'Soybean', 'Vegetables', 'Fruits', 'Other']
 const EXPENSE_TYPES = ['Seeds', 'Fertilizer', 'Pesticide', 'Irrigation', 'Labor', 'Equipment', 'Transport', 'Other']
@@ -46,90 +47,91 @@ function CropForm({ open, onClose, onSubmit, initial, loading }) {
   }, [open, initial])
 
   return (
-    <Modal title={initial ? 'Edit Crop' : 'New Crop'} open={open} onCancel={onClose} footer={null} destroyOnClose>
-      <Form form={form} layout="vertical" onFinish={(v) => onSubmit({ ...v, start_date: v.start_date?.format('YYYY-MM-DD'), expected_harvest_date: v.expected_harvest_date?.format('YYYY-MM-DD') })} style={{ marginTop: 16 }}>
+    <MobileFormPage open={open} onClose={onClose} title={initial ? 'Edit Crop' : 'New Crop'}>
+      <Form form={form} layout="vertical" onFinish={(v) => onSubmit({ ...v, start_date: v.start_date?.format('YYYY-MM-DD'), expected_harvest_date: v.expected_harvest_date?.format('YYYY-MM-DD') })}>
         <Form.Item name="name" label="Crop Name / Label" rules={[{ required: true }]} extra="e.g. Paddy - Kharif 2024">
-          <Input placeholder="e.g. Paddy Kharif 2024" />
+          <Input placeholder="e.g. Paddy Kharif 2024" size="large" />
         </Form.Item>
         <Form.Item name="crop_type" label="Crop Type" rules={[{ required: true }]}>
-          <Select placeholder="Select crop type">
+          <Select placeholder="Select crop type" size="large">
             {CROP_TYPES.map(t => <Select.Option key={t} value={t}>{t}</Select.Option>)}
           </Select>
         </Form.Item>
         <Form.Item name="area_acres" label="Area (Acres)">
-          <InputNumber style={{ width: '100%' }} min={0.1} step={0.5} placeholder="e.g. 2.5" />
+          <InputNumber style={{ width: '100%' }} min={0.1} step={0.5} placeholder="e.g. 2.5" size="large" />
         </Form.Item>
         <Form.Item name="start_date" label="Sowing / Start Date" rules={[{ required: true }]}>
-          <DatePicker style={{ width: '100%' }} />
+          <DatePicker style={{ width: '100%' }} size="large" />
         </Form.Item>
         <Form.Item name="expected_harvest_date" label="Expected Harvest Date">
-          <DatePicker style={{ width: '100%' }} />
+          <DatePicker style={{ width: '100%' }} size="large" />
         </Form.Item>
         <Form.Item name="notes" label="Notes">
           <Input.TextArea rows={2} placeholder="Field location, variety, etc." />
         </Form.Item>
-        <Form.Item style={{ marginBottom: 0, textAlign: 'right' }}>
-          <Button onClick={onClose} style={{ marginRight: 8 }}>Cancel</Button>
-          <Button type="primary" htmlType="submit" loading={loading}>{initial ? 'Update' : 'Create Crop'}</Button>
+        <Form.Item style={{ marginBottom: 0 }}>
+          <Button type="primary" htmlType="submit" loading={loading} block size="large">
+            {initial ? 'Update Crop' : 'Create Crop'}
+          </Button>
         </Form.Item>
       </Form>
-    </Modal>
+    </MobileFormPage>
   )
 }
 
-/* ── Expense Form ───────────────────────────────────────────────── */
-function ExpenseForm({ open, onClose, onSubmit, loading }) {
+/* ── Crop Expense Form ──────────────────────────────────────────── */
+function CropExpenseForm({ open, onClose, onSubmit, loading }) {
   const [form] = Form.useForm()
   useEffect(() => { if (open) form.resetFields() }, [open])
   return (
-    <Modal title="Add Expense" open={open} onCancel={onClose} footer={null} destroyOnClose>
-      <Form form={form} layout="vertical" onFinish={(v) => onSubmit({ ...v, date: v.date?.format('YYYY-MM-DD') })} style={{ marginTop: 16 }}>
+    <MobileFormPage open={open} onClose={onClose} title="Add Crop Expense">
+      <Form form={form} layout="vertical" onFinish={(v) => onSubmit({ ...v, date: v.date?.format('YYYY-MM-DD') })}>
         <Form.Item name="date" label="Date" rules={[{ required: true }]}>
-          <DatePicker style={{ width: '100%' }} defaultValue={dayjs()} />
+          <DatePicker style={{ width: '100%' }} defaultValue={dayjs()} size="large" />
         </Form.Item>
         <Form.Item name="expense_type" label="Expense Type" rules={[{ required: true }]}>
-          <Select placeholder="Select type">
+          <Select placeholder="Select type" size="large">
             {EXPENSE_TYPES.map(t => <Select.Option key={t} value={t}>{t}</Select.Option>)}
           </Select>
         </Form.Item>
         <Form.Item name="amount" label="Amount (₹)" rules={[{ required: true }, { type: 'number', min: 0.01 }]}>
-          <InputNumber style={{ width: '100%' }} min={0.01} precision={2} prefix="₹" />
+          <InputNumber style={{ width: '100%' }} min={0.01} precision={2} prefix="₹" size="large" />
         </Form.Item>
         <Form.Item name="notes" label="Notes">
-          <Input placeholder="Supplier, quantity, etc." />
+          <Input placeholder="Supplier, quantity, etc." size="large" />
         </Form.Item>
-        <Form.Item style={{ marginBottom: 0, textAlign: 'right' }}>
-          <Button onClick={onClose} style={{ marginRight: 8 }}>Cancel</Button>
-          <Button type="primary" htmlType="submit" loading={loading}>Add Expense</Button>
+        <Form.Item style={{ marginBottom: 0 }}>
+          <Button type="primary" htmlType="submit" loading={loading} block size="large">Add Expense</Button>
         </Form.Item>
       </Form>
-    </Modal>
+    </MobileFormPage>
   )
 }
 
-/* ── Harvest Modal ──────────────────────────────────────────────── */
-function HarvestModal({ open, onClose, onSubmit, crop, loading }) {
+/* ── Harvest Form ───────────────────────────────────────────────── */
+function HarvestForm({ open, onClose, onSubmit, crop, loading }) {
   const [form] = Form.useForm()
   useEffect(() => { if (open) form.resetFields() }, [open])
   return (
-    <Modal title="Record Harvest & Sale" open={open} onCancel={onClose} footer={null} destroyOnClose>
-      <div style={{ background: '#F0FDF4', borderRadius: 10, padding: '12px 14px', marginBottom: 16 }}>
+    <MobileFormPage open={open} onClose={onClose} title="Record Harvest & Sale">
+      <div style={{ background: '#F0FDF4', borderRadius: 14, padding: '14px 16px', marginBottom: 20 }}>
         <div style={{ fontSize: 13, color: '#15803D', fontWeight: 600 }}>Total Spent on {crop?.name}</div>
-        <div style={{ fontSize: 22, fontWeight: 800, color: '#166534' }}>{fmt(crop?.total_expenses)}</div>
+        <div style={{ fontSize: 26, fontWeight: 800, color: '#166534' }}>{fmt(crop?.total_expenses)}</div>
       </div>
-      <Form form={form} layout="vertical" onFinish={(v) => onSubmit({ ...v, actual_harvest_date: v.actual_harvest_date?.format('YYYY-MM-DD'), status: 'harvested' })} style={{ marginTop: 8 }}>
+      <Form form={form} layout="vertical" onFinish={(v) => onSubmit({ ...v, actual_harvest_date: v.actual_harvest_date?.format('YYYY-MM-DD'), status: 'harvested' })}>
         <Form.Item name="actual_harvest_date" label="Harvest Date" rules={[{ required: true }]}>
-          <DatePicker style={{ width: '100%' }} defaultValue={dayjs()} />
+          <DatePicker style={{ width: '100%' }} defaultValue={dayjs()} size="large" />
         </Form.Item>
         <Form.Item name="sale_amount" label="Total Sale Amount (₹)" rules={[{ required: true }, { type: 'number', min: 0 }]}>
-          <InputNumber style={{ width: '100%' }} min={0} precision={2} prefix="₹" placeholder="Amount received from buyer" />
+          <InputNumber style={{ width: '100%' }} min={0} precision={2} prefix="₹" placeholder="Amount received from buyer" size="large" />
         </Form.Item>
-        <Form.Item style={{ marginBottom: 0, textAlign: 'right' }}>
-          <Button onClick={onClose} style={{ marginRight: 8 }}>Cancel</Button>
-          <Button type="primary" htmlType="submit" loading={loading} style={{ background: '#16A34A', borderColor: '#16A34A' }}>Mark Harvested</Button>
+        <Form.Item style={{ marginBottom: 0 }}>
+          <Button htmlType="submit" loading={loading} block size="large" style={{ background: '#16A34A', borderColor: '#16A34A', color: '#fff', height: 52, borderRadius: 14, fontWeight: 700 }}>
+            Mark Harvested
+          </Button>
         </Form.Item>
       </Form>
-    </Modal>
+    </MobileFormPage>
   )
 }
 
@@ -227,7 +229,7 @@ function CropDetail({ crop, onClose, onAddExpense, onDeleteExpense, onHarvest, o
             EXPENSE LEDGER ({crop.expenses.length})
           </div>
           {crop.expenses.length === 0 ? (
-            <div style={{ color: 'var(--ft-text-3)', fontSize: 13, textAlign: 'center', marginTop: 20 }}>No expenses yet. Add your first expense above.</div>
+            <div style={{ color: 'var(--ft-text-3)', fontSize: 13, textAlign: 'center', marginTop: 20 }}>No expenses yet.</div>
           ) : (
             crop.expenses.map(e => (
               <div key={e.id} className="crop-exp-row">
@@ -246,8 +248,19 @@ function CropDetail({ crop, onClose, onAddExpense, onDeleteExpense, onHarvest, o
         </div>
       </div>
 
-      <ExpenseForm open={expFormOpen} onClose={() => setExpFormOpen(false)} onSubmit={(v) => { onAddExpense(crop.id, v); setExpFormOpen(false) }} loading={loading} />
-      <HarvestModal open={harvestOpen} onClose={() => setHarvestOpen(false)} onSubmit={(v) => { onHarvest(crop.id, v); setHarvestOpen(false) }} crop={crop} loading={loading} />
+      <CropExpenseForm
+        open={expFormOpen}
+        onClose={() => setExpFormOpen(false)}
+        onSubmit={(v) => { onAddExpense(crop.id, v); setExpFormOpen(false) }}
+        loading={loading}
+      />
+      <HarvestForm
+        open={harvestOpen}
+        onClose={() => setHarvestOpen(false)}
+        onSubmit={(v) => { onHarvest(crop.id, v); setHarvestOpen(false) }}
+        crop={crop}
+        loading={loading}
+      />
     </>
   )
 }
@@ -259,7 +272,7 @@ export default function CropList() {
   const [formOpen, setFormOpen] = useState(false)
   const [editing, setEditing] = useState(null)
   const [selected, setSelected] = useState(null)
-  const [filter, setFilter] = useState('all') // all | active | harvested
+  const [filter, setFilter] = useState('all')
 
   useEffect(() => { dispatch(fetchCrops()) }, [dispatch])
 
@@ -269,7 +282,6 @@ export default function CropList() {
   const handleUpdate = async (data) => {
     await dispatch(updateCrop({ id: editing.id, ...data }))
     setEditing(null); setFormOpen(false)
-    // refresh selected
     if (selected?.id === editing.id) setSelected(items.find(c => c.id === editing.id))
   }
   const handleDelete = async (id) => { await dispatch(deleteCrop(id)); if (selected?.id === id) setSelected(null) }
@@ -280,7 +292,6 @@ export default function CropList() {
   const handleDeleteExpense = async (cropId, expenseId) => {
     await dispatch(deleteCropExpense({ cropId, expenseId }))
     await dispatch(fetchCrops())
-    // refresh selected
     const updated = items.find(c => c.id === cropId)
     if (updated) setSelected(updated)
   }
@@ -343,7 +354,6 @@ export default function CropList() {
                   <IonIcon icon={sm.icon} style={{ fontSize: 11 }} /> {sm.label}
                 </div>
               </div>
-
               <div className="crop-card-metrics">
                 <div className="crop-metric">
                   <IonIcon icon={cashOutline} style={{ color: '#EF4444' }} />
@@ -369,7 +379,6 @@ export default function CropList() {
                   </div>
                 </div>
               </div>
-
               <div className="crop-card-footer">
                 <IonIcon icon={calendarOutline} style={{ fontSize: 12 }} />
                 <span>Started {crop.start_date}</span>
@@ -385,10 +394,8 @@ export default function CropList() {
         <IonIcon icon={addOutline} style={{ fontSize: 24 }} />
       </button>
 
-      {/* Crop form modal */}
       <CropForm open={formOpen} onClose={() => { setFormOpen(false); setEditing(null) }} onSubmit={editing ? handleUpdate : handleCreate} initial={editing} loading={loading} />
 
-      {/* Detail sheet */}
       {selected && (
         <CropDetail
           crop={selected}

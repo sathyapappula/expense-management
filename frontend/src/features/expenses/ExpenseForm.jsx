@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 import { Modal, Form, Input, InputNumber, DatePicker, Select, Button } from 'antd'
 import dayjs from 'dayjs'
+import { useIsMobile } from '../../hooks/useIsMobile'
+import MobileFormPage from '../../components/common/MobileFormPage'
 
 const CATEGORIES = [
   'Food & Dining', 'Transport', 'Housing', 'Healthcare',
@@ -23,9 +25,46 @@ const SUBCATEGORIES = {
   'Others':         ['Miscellaneous', 'Other'],
 }
 
-export default function ExpenseForm({ open, onClose, onSubmit, initialValues, loading }) {
-  const [form] = Form.useForm()
+function ExpenseFormFields({ form, onSubmit, initialValues, loading }) {
   const category = Form.useWatch('category', form)
+
+  const handleFinish = (values) => {
+    onSubmit({ ...values, date: values.date?.format('YYYY-MM-DD') })
+  }
+
+  return (
+    <Form form={form} layout="vertical" onFinish={handleFinish}>
+      <Form.Item name="date" label="Date" rules={[{ required: true, message: 'Required' }]}>
+        <DatePicker style={{ width: '100%' }} size="large" />
+      </Form.Item>
+      <Form.Item name="category" label="Category" rules={[{ required: true, message: 'Required' }]}>
+        <Select placeholder="Select category" size="large" onChange={() => form.setFieldValue('subcategory', undefined)}>
+          {CATEGORIES.map((c) => <Select.Option key={c} value={c}>{c}</Select.Option>)}
+        </Select>
+      </Form.Item>
+      <Form.Item name="subcategory" label="Subcategory">
+        <Select placeholder="Select subcategory (optional)" size="large" allowClear disabled={!category}>
+          {(SUBCATEGORIES[category] || []).map((s) => <Select.Option key={s} value={s}>{s}</Select.Option>)}
+        </Select>
+      </Form.Item>
+      <Form.Item name="amount" label="Amount (₹)" rules={[{ required: true }, { type: 'number', min: 0.01, message: 'Must be positive' }]}>
+        <InputNumber style={{ width: '100%' }} min={0.01} precision={2} placeholder="0.00" prefix="₹" size="large" />
+      </Form.Item>
+      <Form.Item name="notes" label="Notes">
+        <Input.TextArea rows={3} placeholder="Optional notes" />
+      </Form.Item>
+      <Form.Item style={{ marginBottom: 0 }}>
+        <Button type="primary" htmlType="submit" loading={loading} block size="large">
+          {initialValues ? 'Update Expense' : 'Add Expense'}
+        </Button>
+      </Form.Item>
+    </Form>
+  )
+}
+
+export default function ExpenseForm({ open, onClose, onSubmit, initialValues, loading }) {
+  const isMobile = useIsMobile()
+  const [form] = Form.useForm()
 
   useEffect(() => {
     if (open) {
@@ -37,37 +76,23 @@ export default function ExpenseForm({ open, onClose, onSubmit, initialValues, lo
     }
   }, [open, initialValues])
 
-  const handleFinish = (values) => {
-    onSubmit({ ...values, date: values.date?.format('YYYY-MM-DD') })
+  if (isMobile) {
+    return (
+      <MobileFormPage
+        open={open}
+        onClose={onClose}
+        title={initialValues ? 'Edit Expense' : 'Add Expense'}
+      >
+        <ExpenseFormFields form={form} onSubmit={onSubmit} initialValues={initialValues} loading={loading} />
+      </MobileFormPage>
+    )
   }
 
   return (
     <Modal title={initialValues ? 'Edit Expense' : 'Add Expense'} open={open} onCancel={onClose} footer={null} destroyOnClose>
-      <Form form={form} layout="vertical" onFinish={handleFinish} style={{ marginTop: 16 }}>
-        <Form.Item name="date" label="Date" rules={[{ required: true, message: 'Required' }]}>
-          <DatePicker style={{ width: '100%' }} />
-        </Form.Item>
-        <Form.Item name="category" label="Category" rules={[{ required: true, message: 'Required' }]}>
-          <Select placeholder="Select category" onChange={() => form.setFieldValue('subcategory', undefined)}>
-            {CATEGORIES.map((c) => <Select.Option key={c} value={c}>{c}</Select.Option>)}
-          </Select>
-        </Form.Item>
-        <Form.Item name="subcategory" label="Subcategory">
-          <Select placeholder="Select subcategory (optional)" allowClear disabled={!category}>
-            {(SUBCATEGORIES[category] || []).map((s) => <Select.Option key={s} value={s}>{s}</Select.Option>)}
-          </Select>
-        </Form.Item>
-        <Form.Item name="amount" label="Amount (₹)" rules={[{ required: true }, { type: 'number', min: 0.01, message: 'Must be positive' }]}>
-          <InputNumber style={{ width: '100%' }} min={0.01} precision={2} placeholder="0.00" prefix="₹" />
-        </Form.Item>
-        <Form.Item name="notes" label="Notes">
-          <Input.TextArea rows={3} placeholder="Optional notes" />
-        </Form.Item>
-        <Form.Item style={{ marginBottom: 0, textAlign: 'right' }}>
-          <Button onClick={onClose} style={{ marginRight: 8 }}>Cancel</Button>
-          <Button type="primary" htmlType="submit" loading={loading}>{initialValues ? 'Update' : 'Add Expense'}</Button>
-        </Form.Item>
-      </Form>
+      <div style={{ marginTop: 16 }}>
+        <ExpenseFormFields form={form} onSubmit={onSubmit} initialValues={initialValues} loading={loading} />
+      </div>
     </Modal>
   )
 }
