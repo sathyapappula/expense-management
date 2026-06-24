@@ -176,3 +176,4 @@ Management\frontend\node_modules\@babel\parser\lib\index.js:11063:23)
 [2m4:58:54 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/features/budgets/BudgetPlanner.jsx[22m
 [2m4:58:59 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/features/budgets/BudgetPlanner.jsx[22m
 [2m4:59:10 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m5:00:32 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/features/budgets/BudgetPlanner.jsx[22m
