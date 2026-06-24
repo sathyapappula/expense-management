@@ -20,7 +20,10 @@ export default function App() {
     : { algorithm: antTheme.defaultAlgorithm, ...lightTheme }
 
   return (
-    <ConfigProvider theme={themeConfig}>
+    <ConfigProvider
+      theme={themeConfig}
+      getPopupContainer={() => document.body}
+    >
       <RouterProvider router={router} />
     </ConfigProvider>
   )

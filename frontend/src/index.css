@@ -420,6 +420,16 @@
 }
 
 /* ════════════════════════════════════════════════════════════════
+   ANT DESIGN POPUP Z-INDEX — must be above MobileFormPage (9999)
+   ════════════════════════════════════════════════════════════════ */
+.ant-picker-dropdown,
+.ant-select-dropdown,
+.ant-picker-panel-container,
+.ant-dropdown {
+  z-index: 10100 !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
    ANTI-ZOOM — prevent iOS Safari from zooming on input focus
    ════════════════════════════════════════════════════════════════ */
 input, textarea, select,
