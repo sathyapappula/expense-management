@@ -57,3 +57,4 @@ RuntimeWarning: Enable tracemalloc to get the object allocation traceback
 INFO:     Started server process [19384]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app\core\database.py'. Reloading...
