@@ -106,6 +106,235 @@
 }
 
 /* ════════════════════════════════════════════════════════════════
+   AUTH — mobile full-page elite design
+   ════════════════════════════════════════════════════════════════ */
+.auth-mobile-shell {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--ft-hero);
+}
+
+.auth-desktop-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ft-hero);
+  padding: 24px;
+}
+
+.auth-desktop-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--ft-surface);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.35);
+  color: var(--ft-text);
+}
+
+/* Mobile full page */
+.auth-mobile-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* Hero section */
+.auth-hero {
+  position: relative;
+  background: var(--ft-hero);
+  padding: 56px 28px 48px;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 260px;
+}
+.auth-hero--short {
+  min-height: 160px;
+  padding: 36px 28px 28px;
+}
+
+.auth-hero-blob {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.07);
+  pointer-events: none;
+}
+.auth-hero-blob-1 {
+  width: 220px; height: 220px;
+  top: -70px; right: -60px;
+}
+.auth-hero-blob-2 {
+  width: 140px; height: 140px;
+  bottom: -40px; left: -30px;
+  background: rgba(255,255,255,0.05);
+}
+
+.auth-logo-wrap {
+  width: 72px; height: 72px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+
+.auth-hero-title {
+  color: #fff;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin: 0 0 6px;
+}
+.auth-hero-sub {
+  color: rgba(255,255,255,0.72);
+  font-size: 14px;
+  margin: 0 0 20px;
+}
+
+.auth-hero-stats {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+.auth-hero-stat {
+  color: rgba(255,255,255,0.8);
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.auth-hero-stat-dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+}
+
+/* Form panel */
+.auth-panel {
+  flex: 1;
+  min-height: 0;
+  background: var(--ft-surface);
+  border-radius: 28px 28px 0 0;
+  padding: 12px 24px 40px;
+  margin-top: -24px;
+  position: relative;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.auth-panel--scroll {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.auth-panel-handle {
+  width: 36px; height: 4px;
+  border-radius: 2px;
+  background: var(--ft-border);
+  margin: 0 auto 20px;
+}
+
+.auth-panel-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--ft-text);
+  margin: 0 0 4px;
+  letter-spacing: -0.3px;
+}
+.auth-panel-sub {
+  font-size: 14px;
+  color: var(--ft-text-2);
+  margin: 0 0 24px;
+}
+
+/* Custom auth inputs */
+.auth-input {
+  width: 100%;
+  height: 52px;
+  border: 1.5px solid var(--ft-border);
+  border-radius: 14px;
+  padding: 0 16px;
+  font-size: 16px !important;
+  color: var(--ft-text);
+  background: var(--ft-bg);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: var(--ion-font-family);
+  box-sizing: border-box;
+  -webkit-appearance: none;
+}
+.auth-input:focus {
+  border-color: var(--ft-primary);
+  box-shadow: 0 0 0 3px var(--ft-primary-lt);
+  background: var(--ft-surface);
+}
+.auth-input::placeholder {
+  color: var(--ft-text-3);
+}
+
+/* Ant Design form item spacing for auth */
+.auth-panel .ant-form-item {
+  margin-bottom: 14px;
+}
+.auth-panel .ant-form-item-explain-error {
+  font-size: 12px;
+  padding-left: 4px;
+  margin-top: 4px;
+}
+
+/* CTA button */
+.auth-btn {
+  width: 100%;
+  height: 54px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--ft-primary) 0%, #7C3AED 100%);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  border: none;
+  cursor: pointer;
+  margin-top: 8px;
+  box-shadow: 0 6px 20px rgba(91,79,207,0.4);
+  transition: opacity 0.2s, transform 0.1s;
+  font-family: var(--ion-font-family);
+  -webkit-appearance: none;
+}
+.auth-btn:active {
+  opacity: 0.88;
+  transform: scale(0.985);
+}
+.auth-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Bottom switch link */
+.auth-switch {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 14px;
+  color: var(--ft-text-2);
+}
+.auth-link {
+  color: var(--ft-primary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* ════════════════════════════════════════════════════════════════
    ANTI-ZOOM — prevent iOS Safari from zooming on input focus
    ════════════════════════════════════════════════════════════════ */
 input, textarea, select,
