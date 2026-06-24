@@ -1,5 +1,6 @@
+from __future__ import annotations
 from pydantic import BaseModel, field_validator
-from datetime import date, datetime
+import datetime
 from typing import Optional, List
 
 VALID_CATEGORIES = [
@@ -25,7 +26,7 @@ SUBCATEGORIES = {
 
 
 class ExpenseCreate(BaseModel):
-    date: date
+    date: datetime.date
     category: str
     subcategory: Optional[str] = None
     amount: float
@@ -47,7 +48,7 @@ class ExpenseCreate(BaseModel):
 
 
 class ExpenseUpdate(BaseModel):
-    date: Optional[date] = None
+    date: Optional[datetime.date] = None
     category: Optional[str] = None
     subcategory: Optional[str] = None
     amount: Optional[float] = None
@@ -57,13 +58,13 @@ class ExpenseUpdate(BaseModel):
 class ExpenseOut(BaseModel):
     id: int
     user_id: int
-    date: date
+    date: datetime.date
     category: str
     subcategory: Optional[str]
     amount: float
     notes: Optional[str]
-    created_at: datetime
-    updated_at: Optional[datetime]
+    created_at: datetime.datetime
+    updated_at: Optional[datetime.datetime]
 
     model_config = {"from_attributes": True}
 

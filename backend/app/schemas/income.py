@@ -1,10 +1,11 @@
+from __future__ import annotations
 from pydantic import BaseModel, field_validator
-from datetime import date, datetime
+import datetime
 from typing import Optional, List
 
 
 class IncomeCreate(BaseModel):
-    date: date
+    date: datetime.date
     source: str
     amount: float
     notes: Optional[str] = None
@@ -25,7 +26,7 @@ class IncomeCreate(BaseModel):
 
 
 class IncomeUpdate(BaseModel):
-    date: Optional[date] = None
+    date: Optional[datetime.date] = None
     source: Optional[str] = None
     amount: Optional[float] = None
     notes: Optional[str] = None
@@ -34,12 +35,12 @@ class IncomeUpdate(BaseModel):
 class IncomeOut(BaseModel):
     id: int
     user_id: int
-    date: date
+    date: datetime.date
     source: str
     amount: float
     notes: Optional[str]
-    created_at: datetime
-    updated_at: Optional[datetime]
+    created_at: datetime.datetime
+    updated_at: Optional[datetime.datetime]
 
     model_config = {"from_attributes": True}
 

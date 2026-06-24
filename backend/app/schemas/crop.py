@@ -1,11 +1,12 @@
+from __future__ import annotations
 from pydantic import BaseModel, field_validator
-from datetime import date, datetime
+import datetime
 from typing import Optional, List
 from app.models.crop import CROP_TYPES, CROP_EXPENSE_TYPES
 
 
 class CropExpenseCreate(BaseModel):
-    date: date
+    date: datetime.date
     expense_type: str
     amount: float
     notes: Optional[str] = None
@@ -28,11 +29,11 @@ class CropExpenseCreate(BaseModel):
 class CropExpenseOut(BaseModel):
     id: int
     crop_id: int
-    date: date
+    date: datetime.date
     expense_type: str
     amount: float
     notes: Optional[str]
-    created_at: datetime
+    created_at: datetime.datetime
     model_config = {"from_attributes": True}
 
 
@@ -40,8 +41,8 @@ class CropCreate(BaseModel):
     name: str
     crop_type: str
     area_acres: Optional[float] = None
-    start_date: date
-    expected_harvest_date: Optional[date] = None
+    start_date: datetime.date
+    expected_harvest_date: Optional[datetime.date] = None
     notes: Optional[str] = None
 
     @field_validator("crop_type")
@@ -55,8 +56,8 @@ class CropCreate(BaseModel):
 class CropUpdate(BaseModel):
     name: Optional[str] = None
     area_acres: Optional[float] = None
-    expected_harvest_date: Optional[date] = None
-    actual_harvest_date: Optional[date] = None
+    expected_harvest_date: Optional[datetime.date] = None
+    actual_harvest_date: Optional[datetime.date] = None
     status: Optional[str] = None
     sale_amount: Optional[float] = None
     notes: Optional[str] = None
@@ -68,14 +69,13 @@ class CropOut(BaseModel):
     name: str
     crop_type: str
     area_acres: Optional[float]
-    start_date: date
-    expected_harvest_date: Optional[date]
-    actual_harvest_date: Optional[date]
+    start_date: datetime.date
+    expected_harvest_date: Optional[datetime.date]
+    actual_harvest_date: Optional[datetime.date]
     status: str
     sale_amount: float
     notes: Optional[str]
-    created_at: datetime
-    # computed
+    created_at: datetime.datetime
     total_expenses: float = 0.0
     net_profit: float = 0.0
     roi_pct: float = 0.0

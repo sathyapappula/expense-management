@@ -58,3 +58,24 @@ INFO:     Started server process [19384]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 WARNING:  WatchFiles detected changes in 'app\core\database.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for connections to close. (CTRL+C to force quit)
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [19384]
+WARNING:  WatchFiles detected changes in 'app\schemas\budget.py', 'app\schemas\crop.py', 'app\schemas\income.py', 'app\core\database.py', 'app\schemas\expense.py'. Reloading...
+Exception ignored while calling deallocator <function BaseEventLoop.__del__ at 0x000001C5C98538A0>:
+Traceback (most recent call last):
+  File "C:\Users\Chiru\AppData\Local\Programs\Python\Python314\Lib\asyncio\base_events.py", line 760, in __del__
+    self.close()
+  File "C:\Users\Chiru\AppData\Local\Programs\Python\Python314\Lib\asyncio\selector_events.py", line 104, in close
+    self._close_self_pipe()
+  File "C:\Users\Chiru\AppData\Local\Programs\Python\Python314\Lib\asyncio\selector_events.py", line 111, in _close_self_pipe
+    self._remove_reader(self._ssock.fileno())
+AttributeError: '_WindowsSelectorEventLoop' object has no attribute '_ssock'
+C:\Users\Chiru\AppData\Local\Programs\Python\Python314\Lib\site-packages\uvicorn\_subprocess.py:84: RuntimeWarning: coroutine 'Server.serve' was never awaited
+  pass
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+INFO:     Started server process [20384]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
