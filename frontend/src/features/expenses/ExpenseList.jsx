@@ -6,11 +6,12 @@ import { IonIcon } from '@ionic/react'
 import {
   restaurantOutline, carOutline, homeOutline, medkitOutline,
   bagOutline, schoolOutline, filmOutline, personOutline,
-  airplaneOutline, flashOutline, peopleOutline, leafOutline,
-  ellipsisHorizontalOutline, searchOutline, addOutline,
+  airplaneOutline, flashOutline, peopleOutline,
+  ellipsisHorizontalOutline, addOutline, cloudUploadOutline,
 } from 'ionicons/icons'
 import { fetchExpenses, createExpense, updateExpense, deleteExpense } from './expenseSlice'
 import ExpenseForm from './ExpenseForm'
+import ImportExpenses from './ImportExpenses'
 import { formatCurrency, formatDate } from '../../utils/formatters'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import DataTable from '../../components/common/DataTable'
@@ -47,7 +48,7 @@ const fmt = (v) => {
 /* ════════════════════════════════════════════════════════════════
    Mobile Expense View
    ════════════════════════════════════════════════════════════════ */
-function MobileExpenseView({ items, loading, onAdd, onEdit, onDelete }) {
+function MobileExpenseView({ items, loading, onAdd, onEdit, onDelete, onImport }) {
   const [activeTab, setActiveTab] = useState('All')
 
   const filtered = useMemo(() =>
@@ -84,6 +85,10 @@ function MobileExpenseView({ items, loading, onAdd, onEdit, onDelete }) {
           <div className="mob-page-title">Expenses</div>
           <div className="mob-page-sub">Track & categorize your spending</div>
         </div>
+        <button className="imp-fab-chip" onClick={onImport}>
+          <IonIcon icon={cloudUploadOutline} style={{ fontSize: 15 }} />
+          Import
+        </button>
       </div>
 
       {/* ── Category breakdown ────────────────────────────── */}
@@ -257,6 +262,7 @@ export default function ExpenseList() {
   const isMobile = useIsMobile()
   const { items, total, page, page_size, loading } = useSelector((s) => s.expense)
   const [formOpen, setFormOpen] = useState(false)
+  const [importOpen, setImportOpen] = useState(false)
   const [editing, setEditing] = useState(null)
   const [filters, setFilters] = useState({ page: 1, page_size: 100 })
 
@@ -283,6 +289,7 @@ export default function ExpenseList() {
           onAdd={handleAdd}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          onImport={() => setImportOpen(true)}
         />
       ) : (
         <DesktopExpenseView
@@ -297,6 +304,11 @@ export default function ExpenseList() {
         onSubmit={handleSubmit}
         initialValues={editing}
         loading={loading}
+      />
+      <ImportExpenses
+        open={importOpen}
+        onClose={() => setImportOpen(false)}
+        onImported={() => { setImportOpen(false); dispatch(fetchExpenses(filters)) }}
       />
     </>
   )
