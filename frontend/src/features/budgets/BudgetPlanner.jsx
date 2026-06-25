@@ -12,7 +12,7 @@ import { fetchBudgetByMonth, createBudget, updateBudget, deleteBudget } from './
 import PageHeader from '../../components/common/PageHeader'
 import MobileFormPage from '../../components/common/MobileFormPage'
 import { formatCurrency } from '../../utils/formatters'
-import { confirmDelete } from '../../utils/confirmDelete'
+import ConfirmDelete from '../../components/common/ConfirmDelete'
 import { useIsMobile } from '../../hooks/useIsMobile'
 
 const { Text } = Typography
@@ -170,7 +170,9 @@ export default function BudgetPlanner() {
                 extra={
                   <Space>
                     <Button size="small" onClick={() => openEdit(budget)}>Edit</Button>
-                    <Button size="small" danger onClick={() => confirmDelete('Delete this budget?', () => handleDelete(budget.id))}>Delete</Button>
+                    <ConfirmDelete title="Delete this budget?" onConfirm={() => handleDelete(budget.id)}>
+                      <Button size="small" danger>Delete</Button>
+                    </ConfirmDelete>
                   </Space>
                 }
                 style={{ borderTop: `3px solid ${color}` }}
