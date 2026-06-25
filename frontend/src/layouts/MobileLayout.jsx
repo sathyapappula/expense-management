@@ -5,7 +5,7 @@ import {
   homeOutline, home,
   cashOutline, cash,
   cartOutline, cart,
-  pieChartOutline, pieChart,
+  documentTextOutline, documentText,
   leafOutline, leaf,
   moonOutline, sunnyOutline,
   logOutOutline,
@@ -17,11 +17,11 @@ import { useTheme } from '../hooks/useTheme'
 
 /* ─── Navigation tabs ────────────────────────────────────────────── */
 const TABS = [
-  { path: '/',         iconOff: homeOutline,     iconOn: home,     label: 'Home' },
-  { path: '/income',   iconOff: cashOutline,     iconOn: cash,     label: 'Income' },
-  { path: '/expenses', iconOff: cartOutline,     iconOn: cart,     label: 'Expenses' },
-  { path: '/crops',    iconOff: leafOutline,     iconOn: leaf,     label: 'Crops' },
-  { path: '/budget',   iconOff: pieChartOutline, iconOn: pieChart, label: 'Budget' },
+  { path: '/',         iconOff: homeOutline,         iconOn: home,         label: 'Home' },
+  { path: '/income',   iconOff: cashOutline,         iconOn: cash,         label: 'Income' },
+  { path: '/expenses', iconOff: cartOutline,         iconOn: cart,         label: 'Expenses' },
+  { path: '/crops',    iconOff: leafOutline,         iconOn: leaf,         label: 'Crops' },
+  { path: '/reports',  iconOff: documentTextOutline, iconOn: documentText, label: 'Reports' },
 ]
 
 const getInitials = (name = '') =>

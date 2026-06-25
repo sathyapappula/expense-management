@@ -186,3 +186,10 @@ Management\frontend\node_modules\@babel\parser\lib\index.js:11063:23)
 [2m5:36:36 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/features/income/IncomeList.jsx[22m
 [2m5:36:56 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
 [2m5:37:02 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/features/income/IncomeList.jsx[22m
+[2m5:49:48 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/features/crops/CropList.jsx[22m
+[2m5:56:56 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/layouts/MobileLayout.jsx[22m
+[2m5:57:03 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/layouts/MobileLayout.jsx[22m
+[2m5:58:04 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/features/reports/Reports.jsx[22m
+[2m5:58:28 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m5:58:59 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mΓ£¿ new dependencies optimized: [33mjspdf, jspdf-autotable[32m[39m
+[2m5:58:59 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mΓ£¿ optimized dependencies changed. reloading[39m

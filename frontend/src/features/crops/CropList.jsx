@@ -135,7 +135,7 @@ function HarvestForm({ open, onClose, onSubmit, crop, loading }) {
   )
 }
 
-/* ── Crop Detail Sheet ──────────────────────────────────────────── */
+/* ── Crop Detail Page ───────────────────────────────────────────── */
 function CropDetail({ crop, onClose, onAddExpense, onDeleteExpense, onHarvest, onEdit, onDelete, loading }) {
   const [expFormOpen, setExpFormOpen] = useState(false)
   const [harvestOpen, setHarvestOpen] = useState(false)
@@ -144,25 +144,14 @@ function CropDetail({ crop, onClose, onAddExpense, onDeleteExpense, onHarvest, o
 
   return (
     <>
-      <div className="crop-detail-overlay" onClick={onClose} />
-      <div className="crop-detail-sheet">
-        {/* Header */}
-        <div className="crop-detail-head" style={{ background: sm.color }}>
-          <button className="drawer-close-btn" onClick={onClose} style={{ top: 14, right: 14 }}>
-            <IonIcon icon={addOutline} style={{ transform: 'rotate(45deg)' }} />
-          </button>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-            <div style={{ background: 'rgba(255,255,255,0.2)', borderRadius: 10, padding: '6px 10px' }}>
-              <IonIcon icon={leafOutline} style={{ fontSize: 22, color: '#fff' }} />
-            </div>
-            <div>
-              <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: 11 }}>{crop.crop_type} · {crop.area_acres ? `${crop.area_acres} acres` : '—'}</div>
-              <div style={{ color: '#fff', fontSize: 18, fontWeight: 700 }}>{crop.name}</div>
-            </div>
+      <MobileFormPage open={true} onClose={onClose} title={crop.name}>
+        {/* Type / area / status */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+          <div style={{ color: 'var(--ft-text-3)', fontSize: 13 }}>
+            {crop.crop_type}{crop.area_acres ? ` · ${crop.area_acres} acres` : ''}
           </div>
-          <div style={{ background: sm.bg, borderRadius: 20, padding: '3px 12px', display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-            <IonIcon icon={sm.icon} style={{ color: sm.color, fontSize: 13 }} />
-            <span style={{ color: sm.color, fontSize: 12, fontWeight: 600 }}>{sm.label}</span>
+          <div className="crop-status-badge" style={{ background: sm.bg, color: sm.color }}>
+            <IonIcon icon={sm.icon} style={{ fontSize: 11 }} /> {sm.label}
           </div>
         </div>
 
@@ -186,7 +175,7 @@ function CropDetail({ crop, onClose, onAddExpense, onDeleteExpense, onHarvest, o
         </div>
 
         {/* Dates */}
-        <div style={{ padding: '0 16px 8px', display: 'flex', gap: 12 }}>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 16 }}>
           <div className="crop-date-chip">
             <IonIcon icon={calendarOutline} />
             <span>Sown: {crop.start_date}</span>
@@ -206,7 +195,7 @@ function CropDetail({ crop, onClose, onAddExpense, onDeleteExpense, onHarvest, o
         </div>
 
         {/* Actions */}
-        <div style={{ padding: '0 16px 12px', display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 20 }}>
           <button className="crop-action-pill" onClick={() => setExpFormOpen(true)}>
             <IonIcon icon={addOutline} /> Add Expense
           </button>
@@ -224,29 +213,29 @@ function CropDetail({ crop, onClose, onAddExpense, onDeleteExpense, onHarvest, o
         </div>
 
         {/* Expense list */}
-        <div style={{ padding: '0 16px', flex: 1, overflowY: 'auto' }}>
-          <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 8, color: 'var(--ft-text-2)' }}>
-            EXPENSE LEDGER ({crop.expenses.length})
-          </div>
-          {crop.expenses.length === 0 ? (
-            <div style={{ color: 'var(--ft-text-3)', fontSize: 13, textAlign: 'center', marginTop: 20 }}>No expenses yet.</div>
-          ) : (
-            crop.expenses.map(e => (
-              <div key={e.id} className="crop-exp-row">
-                <div className="crop-exp-type-badge">{e.expense_type}</div>
-                <div className="crop-exp-info">
-                  <div className="crop-exp-note">{e.notes || '—'}</div>
-                  <div className="crop-exp-date">{e.date}</div>
-                </div>
-                <div className="crop-exp-amount">-{fmt(e.amount)}</div>
-                <button className="exp-action-btn danger" onClick={() => onDeleteExpense(crop.id, e.id)}>
-                  <IonIcon icon={trashOutline} style={{ fontSize: 12 }} />
-                </button>
-              </div>
-            ))
-          )}
+        <div style={{ fontWeight: 700, fontSize: 12, marginBottom: 10, color: 'var(--ft-text-3)', textTransform: 'uppercase', letterSpacing: 0.8 }}>
+          Expense Ledger ({crop.expenses.length})
         </div>
-      </div>
+        {crop.expenses.length === 0 ? (
+          <div style={{ color: 'var(--ft-text-3)', fontSize: 13, textAlign: 'center', padding: '24px 0' }}>
+            No expenses yet. Tap "Add Expense" above.
+          </div>
+        ) : (
+          crop.expenses.map(e => (
+            <div key={e.id} className="crop-exp-row">
+              <div className="crop-exp-type-badge">{e.expense_type}</div>
+              <div className="crop-exp-info">
+                <div className="crop-exp-note">{e.notes || '—'}</div>
+                <div className="crop-exp-date">{e.date}</div>
+              </div>
+              <div className="crop-exp-amount">-{fmt(e.amount)}</div>
+              <button className="exp-action-btn danger" onClick={() => onDeleteExpense(crop.id, e.id)}>
+                <IonIcon icon={trashOutline} style={{ fontSize: 12 }} />
+              </button>
+            </div>
+          ))
+        )}
+      </MobileFormPage>
 
       <CropExpenseForm
         open={expFormOpen}

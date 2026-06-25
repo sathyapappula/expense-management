@@ -16,6 +16,8 @@
     "antd": "^5.22.0",
     "axios": "^1.7.7",
     "dayjs": "^1.11.13",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-redux": "^9.1.2",
