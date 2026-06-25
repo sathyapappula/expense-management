@@ -42,7 +42,8 @@ export default function MobileLayout() {
   const { isDark, toggleTheme } = useTheme()
 
   const isHome    = location.pathname === '/'
-  const pageTitle = TABS.find(t => t.path === location.pathname)?.label ?? 'FinanceTracker'
+  const PAGE_TITLES = { '/': 'Home', '/income': 'Income', '/expenses': 'Expenses', '/crops': 'Crops', '/reports': 'Reports', '/budget': 'Budget', '/assets': 'Portfolio', '/cards': 'Credit Cards', '/ask-ai': 'AI Advisor' }
+  const pageTitle = PAGE_TITLES[location.pathname] ?? 'FinanceTracker'
 
   const handleLogout = () => {
     dispatch(logout())

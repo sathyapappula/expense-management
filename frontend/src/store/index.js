@@ -6,6 +6,8 @@ import expenseReducer from '../features/expenses/expenseSlice'
 import budgetReducer from '../features/budgets/budgetSlice'
 import reportsReducer from '../features/reports/reportsSlice'
 import cropsReducer from '../features/crops/cropSlice'
+import assetsReducer from '../features/assets/assetsSlice'
+import ccReducer from '../features/creditcards/creditCardsSlice'
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +18,8 @@ export const store = configureStore({
     budget: budgetReducer,
     reports: reportsReducer,
     crops: cropsReducer,
+    assets: assetsReducer,
+    cc: ccReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),

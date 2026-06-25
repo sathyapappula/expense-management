@@ -8,10 +8,9 @@ import {
 } from '@ant-design/icons'
 import { IonIcon } from '@ionic/react'
 import {
-  addCircleOutline, removeCircleOutline,
-  leafOutline, pieChartOutline, barChartOutline,
-  walletOutline, analyticsOutline, cashOutline, cartOutline,
-  trendingUpOutline,
+  addCircleOutline,
+  leafOutline, cashOutline, cartOutline,
+  trendingUpOutline, briefcaseOutline, cardOutline, sparklesOutline,
 } from 'ionicons/icons'
 import { fetchDashboard } from './dashboardSlice'
 import StatCard from '../../components/common/StatCard'
@@ -23,10 +22,10 @@ import { useIsMobile } from '../../hooks/useIsMobile'
 const { Title } = Typography
 
 const QUICK_ACTIONS = [
-  { icon: addCircleOutline,    label: 'Income',   path: '/income',   color: '#10B981', bg: 'var(--ft-success-lt)' },
-  { icon: removeCircleOutline, label: 'Expense',  path: '/expenses', color: '#EF4444', bg: 'var(--ft-danger-lt)' },
-  { icon: leafOutline,         label: 'Crops',    path: '/crops',    color: '#84CC16', bg: '#F7FEE7' },
-  { icon: pieChartOutline,     label: 'Budget',   path: '/budget',   color: '#6366F1', bg: 'var(--ft-indigo-lt)' },
+  { icon: addCircleOutline, label: 'Income',    path: '/income',   color: '#10B981', bg: 'var(--ft-success-lt)' },
+  { icon: sparklesOutline,  label: 'Ask AI',    path: '/ask-ai',   color: '#7C3AED', bg: '#F5F3FF' },
+  { icon: cardOutline,      label: 'Cards',     path: '/cards',    color: '#0EA5E9', bg: '#E0F2FE' },
+  { icon: briefcaseOutline, label: 'Portfolio', path: '/assets',   color: '#6366F1', bg: 'var(--ft-indigo-lt)' },
 ]
 
 const fmt = (v) => {

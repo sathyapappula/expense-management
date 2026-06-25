@@ -10,6 +10,9 @@ import ExpenseList from '../features/expenses/ExpenseList'
 import BudgetPlanner from '../features/budgets/BudgetPlanner'
 import Reports from '../features/reports/Reports'
 import CropList from '../features/crops/CropList'
+import Assets from '../features/assets/Assets'
+import CreditCards from '../features/creditcards/CreditCards'
+import AIAdvisor from '../features/ai/AIAdvisor'
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +28,9 @@ export const router = createBrowserRouter([
           { path: 'budget',    element: <BudgetPlanner /> },
           { path: 'reports',   element: <Reports /> },
           { path: 'crops',     element: <CropList /> },
+          { path: 'assets',    element: <Assets /> },
+          { path: 'cards',     element: <CreditCards /> },
+          { path: 'ask-ai',   element: <AIAdvisor /> },
         ],
       },
     ],
