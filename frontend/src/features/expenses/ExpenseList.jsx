@@ -10,6 +10,7 @@ import {
   ellipsisHorizontalOutline, addOutline, cloudUploadOutline,
 } from 'ionicons/icons'
 import { fetchExpenses, createExpense, updateExpense, deleteExpense } from './expenseSlice'
+import { confirmDelete } from '../../utils/confirmDelete'
 import ExpenseForm from './ExpenseForm'
 import ImportExpenses from './ImportExpenses'
 import { formatCurrency, formatDate } from '../../utils/formatters'
@@ -178,7 +179,7 @@ function MobileExpenseView({ items, loading, onAdd, onEdit, onDelete, onImport }
                       <button className="exp-action-btn" onClick={() => onEdit(item)}>
                         <EditOutlined />
                       </button>
-                      <button className="exp-action-btn danger" onClick={() => onDelete(item)}>
+                      <button className="exp-action-btn danger" onClick={() => confirmDelete('Delete this expense?', () => onDelete(item))}>
                         <DeleteOutlined />
                       </button>
                     </div>

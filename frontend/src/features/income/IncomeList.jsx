@@ -5,6 +5,7 @@ import { SearchOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { IonIcon } from '@ionic/react'
 import { addOutline, cashOutline } from 'ionicons/icons'
 import { fetchIncome, createIncome, updateIncome, deleteIncome } from './incomeSlice'
+import { confirmDelete } from '../../utils/confirmDelete'
 import PageHeader from '../../components/common/PageHeader'
 import DataTable from '../../components/common/DataTable'
 import IncomeForm from './IncomeForm'
@@ -96,7 +97,7 @@ function MobileIncomeView({ items, loading, onAdd, onEdit, onDelete }) {
                     <button className="exp-action-btn" onClick={() => onEdit(item)}>
                       <EditOutlined />
                     </button>
-                    <button className="exp-action-btn danger" onClick={() => onDelete(item)}>
+                    <button className="exp-action-btn danger" onClick={() => confirmDelete('Delete this income?', () => onDelete(item))}>
                       <DeleteOutlined />
                     </button>
                   </div>

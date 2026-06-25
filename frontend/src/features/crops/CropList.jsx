@@ -12,6 +12,7 @@ import {
   fetchCrops, createCrop, updateCrop, deleteCrop, addCropExpense, deleteCropExpense,
 } from './cropSlice'
 import { formatCurrency } from '../../utils/formatters'
+import { confirmDelete } from '../../utils/confirmDelete'
 import MobileFormPage from '../../components/common/MobileFormPage'
 
 const CROP_TYPES = ['Paddy', 'Wheat', 'Cotton', 'Sugarcane', 'Maize', 'Groundnut', 'Sunflower', 'Soybean', 'Vegetables', 'Fruits', 'Other']
@@ -207,7 +208,7 @@ function CropDetail({ crop, onClose, onAddExpense, onDeleteExpense, onHarvest, o
           <button className="crop-action-pill edit" onClick={() => onEdit(crop)}>
             <IonIcon icon={createOutline} /> Edit
           </button>
-          <button className="crop-action-pill danger" onClick={() => { if (window.confirm('Delete this crop?')) onDelete(crop.id) }}>
+          <button className="crop-action-pill danger" onClick={() => confirmDelete('Delete this crop?', () => onDelete(crop.id))}>
             <IonIcon icon={trashOutline} /> Delete
           </button>
         </div>
@@ -229,7 +230,7 @@ function CropDetail({ crop, onClose, onAddExpense, onDeleteExpense, onHarvest, o
                 <div className="crop-exp-date">{e.date}</div>
               </div>
               <div className="crop-exp-amount">-{fmt(e.amount)}</div>
-              <button className="exp-action-btn danger" onClick={() => onDeleteExpense(crop.id, e.id)}>
+              <button className="exp-action-btn danger" onClick={() => confirmDelete('Delete this expense?', () => onDeleteExpense(crop.id, e.id))}>
                 <IonIcon icon={trashOutline} style={{ fontSize: 12 }} />
               </button>
             </div>
