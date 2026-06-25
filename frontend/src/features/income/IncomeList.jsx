@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Card, Input, DatePicker, Space, Typography, Skeleton, Empty } from 'antd'
 import { SearchOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { IonIcon } from '@ionic/react'
-import { addOutline, cashOutline, walletOutline, trendingUpOutline } from 'ionicons/icons'
+import { addOutline, cashOutline } from 'ionicons/icons'
 import { fetchIncome, createIncome, updateIncome, deleteIncome } from './incomeSlice'
 import PageHeader from '../../components/common/PageHeader'
 import DataTable from '../../components/common/DataTable'
@@ -48,35 +48,24 @@ function MobileIncomeView({ items, loading, onAdd, onEdit, onDelete }) {
         </div>
       </div>
 
-      {/* Summary strip */}
-      <div className="income-summary-strip">
-        <div className="income-summary-item">
-          <div className="income-summary-icon" style={{ background: 'rgba(16,185,129,0.15)' }}>
-            <IonIcon icon={walletOutline} style={{ color: '#10B981' }} />
-          </div>
-          <div>
-            <div className="income-summary-label">This Month</div>
-            <div className="income-summary-val" style={{ color: '#10B981' }}>{fmt(monthTotal)}</div>
-          </div>
-        </div>
-        <div className="income-summary-divider" />
-        <div className="income-summary-item">
-          <div className="income-summary-icon" style={{ background: 'rgba(99,102,241,0.15)' }}>
-            <IonIcon icon={trendingUpOutline} style={{ color: '#6366F1' }} />
-          </div>
-          <div>
-            <div className="income-summary-label">Total</div>
-            <div className="income-summary-val" style={{ color: '#6366F1' }}>{fmt(total)}</div>
-          </div>
-        </div>
-        <div className="income-summary-divider" />
-        <div className="income-summary-item">
-          <div className="income-summary-icon" style={{ background: 'rgba(245,158,11,0.15)' }}>
-            <IonIcon icon={cashOutline} style={{ color: '#F59E0B' }} />
-          </div>
-          <div>
-            <div className="income-summary-label">Entries</div>
-            <div className="income-summary-val" style={{ color: '#F59E0B' }}>{items.length}</div>
+      {/* Summary card */}
+      <div className="income-hero-card">
+        <div className="income-hero-content">
+          <div className="income-hero-label">This Month's Income</div>
+          <div className="income-hero-amount"><small>₹</small>{Number(monthTotal).toLocaleString('en-IN')}</div>
+          <div className="income-hero-row">
+            <div className="income-hero-stat">
+              <div className="income-hero-stat-label">All Time</div>
+              <div className="income-hero-stat-value">{fmt(total)}</div>
+            </div>
+            <div className="income-hero-stat">
+              <div className="income-hero-stat-label">Entries</div>
+              <div className="income-hero-stat-value">{items.length}</div>
+            </div>
+            <div className="income-hero-stat">
+              <div className="income-hero-stat-label">This Month</div>
+              <div className="income-hero-stat-value">{thisMonth.length}</div>
+            </div>
           </div>
         </div>
       </div>
