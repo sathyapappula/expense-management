@@ -30,9 +30,9 @@ export const router = createBrowserRouter([
           { path: 'crops',     element: <CropList /> },
           { path: 'assets',    element: <Assets /> },
           { path: 'cards',     element: <CreditCards /> },
-          { path: 'ask-ai',   element: <AIAdvisor /> },
         ],
       },
+      { path: 'ask-ai', element: <AIAdvisor /> },
     ],
   },
   {
